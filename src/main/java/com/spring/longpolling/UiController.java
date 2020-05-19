@@ -2,7 +2,6 @@ package com.github.damianmcdonald.springlongpolling;
 
 import com.github.damianmcdonald.springlongpolling.longpolling.LongPollingEventSimulator;
 import com.github.damianmcdonald.springlongpolling.longpolling.LongPollingSession;
-import com.github.damianmcdonald.springlongpolling.persistence.dao.NodeNotificationDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,27 +19,23 @@ public class UiController {
     private static final Logger LOGGER = Logger.getLogger(UiController.class.getName());
 
     @Autowired
-    private NodeNotificationDao dao;
-
-    @Autowired
     LongPollingEventSimulator simulator;
 
-    @RequestMapping("/register/{dossierId}")
+    @RequestMapping("/register/{registrationId}")
     @ResponseBody
-    public DeferredResult<String> registerClient(@PathVariable("dossierId") final long dossierId) {
-        LOGGER.log(Level.INFO, "Registering client for dossier id: " + dossierId);
+    public DeferredResult<String> registerClient(@PathVariable("registrationId") final long registrationId) {
+        LOGGER.log(Level.INFO, "Registering client for registrationId id: " + registrationId);
         final DeferredResult<String> deferredResult = new DeferredResult<>();
-        // Add paused http requests to event queue
-        simulator.getPollingQueue().add(new LongPollingSession(dossierId, deferredResult));
+        simulator.getPollingMap().put(registrationId, new LongPollingSession(registrationId, deferredResult));
         return deferredResult;
     }
 
-    @RequestMapping("/simulate/{dossierId}")
+    @RequestMapping("/simulate/{registrationId}")
     @ResponseBody
-    public String simulateEvent(@PathVariable("dossierId") final long dossierId) {
-        LOGGER.log(Level.INFO, "Simulating event for dossier id: " + dossierId);
-        simulator.simulateIncomingNotification(dossierId);
-        return "Simulating event for dossier Id: " + dossierId;
+    public String simulateEvent(@PathVariable("registrationId") final long registrationId) {
+        LOGGER.log(Level.INFO, "Simulating event for registrationId id: " + registrationId);
+        simulator.simulateIncomingNotification(registrationId);
+        return "Simulating event for registrationId Id: " + registrationId;
     }
 }
 

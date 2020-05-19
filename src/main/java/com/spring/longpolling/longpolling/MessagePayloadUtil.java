@@ -15,15 +15,7 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class MessagePayloadUtil {
 
-    private List<MessagePayload> deserialisePayloadList(final String sourceJson) {
-        try {
-            final ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(sourceJson, objectMapper.getTypeFactory().constructCollectionType(List.class, MessagePayload.class));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
+
 
     private MessagePayload deserialisePayload(final String sourceJson) {
         try {
@@ -55,18 +47,6 @@ public class MessagePayloadUtil {
         }
     }
 
-    public String appendMessagePayload(final String sourceJson, final String appendJson) {
-        final List<MessagePayload> sourcePayloadList = deserialisePayloadList(sourceJson);
-        if (appendJson != null) {
-            final List<MessagePayload> appendPayloadList = deserialisePayloadList(appendJson);
-            return serialisePayload(
-                    Stream.concat(
-                            sourcePayloadList.stream(),
-                            appendPayloadList.stream()
-                    ).collect(toList()));
-        }
-        return sourceJson;
-    }
 
     static class MessagePayload {
 

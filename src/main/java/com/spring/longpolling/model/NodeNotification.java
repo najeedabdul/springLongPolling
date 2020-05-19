@@ -1,28 +1,17 @@
-package com.github.damianmcdonald.springlongpolling.persistence.model;
+package com.spring.longpolling.persistence.model;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-@Table(name = "NOTIFICATIONS")
-public class NodeNotification implements Serializable {
+public class NodeNotification {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "TIMESTAMP")
     private Date timestamp;
 
-    @Column(name = "NODE_ID")
     private String nodeId;
 
-    @Column(name = "DOSSIER_ID")
-    private Long dossierId;
+    private Long registrationId;
 
-    @Column(name = "PAYLOAD")
     private String notificationPayload;
 
 
@@ -50,12 +39,12 @@ public class NodeNotification implements Serializable {
         this.nodeId = nodeId;
     }
 
-    public Long getDossierId() {
-        return dossierId;
+    public Long getRegistrationId() {
+        return registrationId;
     }
 
-    public void setDossierId(Long dossierId) {
-        this.dossierId = dossierId;
+    public void setRegistrationId(Long registrationId) {
+        this.registrationId = registrationId;
     }
 
     public String getNotificationPayload() {
